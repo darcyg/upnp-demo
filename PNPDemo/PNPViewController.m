@@ -49,42 +49,61 @@
         NSLog(@"urn is %@", device.urn);
         if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
             MediaServer1Device *server = (MediaServer1Device*)device;
-            
-            //pass by reference strings to read output
-            NSMutableString *outResult = [[NSMutableString alloc] init];
-            NSMutableString *outNumberReturned = [[NSMutableString alloc] init];
-            NSMutableString *outTotalMatches = [[NSMutableString alloc] init];
-            NSMutableString *outUpdateID = [[NSMutableString alloc] init];
-
-            
-            [[server contentDirectory] BrowseWithObjectID:@"0"
-                                               BrowseFlag:@"BrowseDirectChildren"
-                                                   Filter:@"*"
-                                            StartingIndex:@"0"
-                                           RequestedCount:@"0"
-                                             SortCriteria:@"+dc:title'"
-                                                OutResult:outResult
-                                        OutNumberReturned:outNumberReturned
-                                          OutTotalMatches:outTotalMatches
-                                              OutUpdateID:outUpdateID];
-            
-            NSData *didl = [outResult dataUsingEncoding:NSUTF8StringEncoding];
-            
-            NSLog(@"preparing to read playlist");
-            
-            [self.mPlaylist removeAllObjects]; //clear playlist so we can add to it
-            MediaServerBasicObjectParser *parser = [[MediaServerBasicObjectParser alloc] initWithMediaObjectArray:self.mPlaylist];
-            [parser parseFromData:didl];
-            NSLog(@"playlist count is %d", [self.mPlaylist count]);
-            NSLog(@"playlist is %@", self.mPlaylist);
-            
-            for (MediaServer1BasicObject *item in self.mPlaylist) {
-                NSLog(@"playlist item title is %@", item.title);
-            }
+            NSArray *results = [self exploreMediaDirectoryRecursively:@"0" onServer:server];
+            NSLog(@"found %d items", [results count]);
         }
 
     }
-
 }
+
+- (NSArray *)exploreMediaDirectoryRecursively:(NSString *)rootItemObjectID onServer:(MediaServer1Device *)server {
+    NSLog(@"exploring with rootitem id %@", rootItemObjectID);
+    NSMutableArray *mediaItems = [[NSMutableArray alloc] init];
+    for (MediaServer1BasicObject *item in [self mediaItemsForDirectory:rootItemObjectID onServer:server]) {
+        if ([item isContainer]) {
+            NSLog(@"exploring container %@", item.title);
+            NSArray *items =[self exploreMediaDirectoryRecursively:[item objectID] onServer:server];
+//            NSArray *items = [self mediaItemsForDirectory:[item objectID] onServer:server];
+            NSLog(@"found %d items in %@ directory", [items count], item.title);
+            [mediaItems addObjectsFromArray:items];
+        } else {
+            NSLog(@"adding media item %@", item.title);
+            [mediaItems addObject:item];
+        }
+    }
+    NSLog(@"going to return %d", [mediaItems count]);
+    return [mediaItems copy];
+}
+
+- (NSArray *)mediaItemsForDirectory:(NSString *)rootItemObjectID onServer:(MediaServer1Device *)server {
+    NSLog(@"retreiving media items for object id %@", rootItemObjectID);
+    //pass by reference strings to read output
+    NSMutableString *outResult = [[NSMutableString alloc] init];
+    NSMutableString *outNumberReturned = [[NSMutableString alloc] init];
+    NSMutableString *outTotalMatches = [[NSMutableString alloc] init];
+    NSMutableString *outUpdateID = [[NSMutableString alloc] init];
+    
+    
+    [[server contentDirectory] BrowseWithObjectID:rootItemObjectID
+                                       BrowseFlag:@"BrowseDirectChildren"
+                                           Filter:@"*"
+                                    StartingIndex:@"0"
+                                   RequestedCount:@"0"
+                                     SortCriteria:@"+dc:title'"
+                                        OutResult:outResult
+                                OutNumberReturned:outNumberReturned
+                                  OutTotalMatches:outTotalMatches
+                                      OutUpdateID:outUpdateID];
+    
+    NSData *didl = [outResult dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableArray *mediaItems = [[NSMutableArray alloc] init];
+    MediaServerBasicObjectParser *parser = [[MediaServerBasicObjectParser alloc] initWithMediaObjectArray:mediaItems];
+    [parser parseFromData:didl];
+    
+    
+    NSLog(@"returning %d mediaItems for directory %@", [mediaItems count], rootItemObjectID);
+    return [mediaItems copy];
+}
+
 
 @end
