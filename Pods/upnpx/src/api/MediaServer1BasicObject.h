@@ -47,6 +47,8 @@
 
 -(id)init;
 -(void)dealloc;
+-(NSDictionary *)properties;
+-(NSString *)propertiesString;
 
 
 @property (readwrite, retain)NSString *objectID;

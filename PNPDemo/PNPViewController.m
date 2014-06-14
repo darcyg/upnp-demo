@@ -41,46 +41,55 @@
 -(void)UPnPDBWillUpdate:(UPnPDB*)sender{
 }
 
+//NSString *objectID;
+//NSString *parentID;
+//NSString *objectClass;
+//NSString *title;
+//NSString *albumArt;
+//
+//BOOL isContainer;
+
+
 -(void)UPnPDBUpdated:(UPnPDB*)sender{
     for (BasicUPnPDevice *device in self.mDevices) {
         
         if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaRenderer:1"]){
-            if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Server"].location != NSNotFound) {
-                NSLog(@"media renderer friendly name is %@", device.friendlyName);
+            if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Renderer"].location != NSNotFound) {
+                MediaRenderer1Device *mediaRenderer = (MediaRenderer1Device *)device;
+                NSLog(@"SONOS MEDIA SERVER is %@", mediaRenderer.friendlyName);
+                NSLog(@"mediaPlayList is %@", mediaRenderer.playList.playList);
+                NSLog(@"lets play sampel track: %@", [[self sampleTrack] propertiesString]);
+                [mediaRenderer playWithMedia:[self sampleTrack]];
+//                SoapActionsAVTransport1 *avTransport =  (SoapActionsAVTransport1 *)[device getServiceForType:@"urn:schemas-upnp-org:service:AVTransport:1"].soap;
+//                [(SoapActionsAVTransport1 *)avTransport.soap PlayWithInstanceID:@"0" Speed:@"1"];
+//                NSMutableDictionary *services = [device getServices];
+//                for(id key in services) {
+//                    BasicUPnPService *service = [services objectForKey:key];
+//                    if ([self.processedServices containsObject:service]) {
+//                        continue;
+//                    }
+
+//                    [service process];
+//                    [self.processedServices addObject:service];
+//                }
+
             }
         }
         
         //THIS IS HOW U FIND SONOS MEDIA LIBRARY
-        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
+        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"] && NO){
             if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Server"].location != NSNotFound) {
-                if (!self.handledSonos) {
-                    NSLog(@"going to read conetnts from sonos server recursively");
-                    MediaServer1Device *sonosMediaServer =  (MediaServer1Device *)device;
-                    NSArray *results = [self exploreMediaDirectoryRecursively:@"0" onServer:sonosMediaServer];
-                    NSLog(@"results count %d", [results count]);
-                    self.handledSonos = YES;
-                }
+                NSLog(@"*************************searchfor sonos media");
+                MediaServer1Device *sonosMediaServer = (MediaServer1Device *)device;
+                NSLog(@"media items count %d", [[self exploreMediaDirectoryRecursively:@"0" onServer:sonosMediaServer] count]);
             }
         }
 
-//        NSLog(@"urn is %@", device.urn);
-//        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
         
         if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:ZonePlayer:1"]){
-//        if (YES) {
             BasicUPnPDevice *server = (BasicUPnPDevice *)device;
             NSLog(@"server friendly name is %@", server.friendlyName);
-            NSMutableDictionary *services = [server getServices] ;
             
-            for(id key in services) {
-                BasicUPnPService *service = [services objectForKey:key];
-                if ([self.processedServices containsObject:service]) {
-                    continue;
-                }
-
-                [service process];
-                [self.processedServices addObject:service];
-            }
             
             BasicUPnPService *musicService;
             for (BasicUPnPService *service in self.processedServices) {
@@ -90,15 +99,42 @@
             }
             
             NSLog(@"music service %@", musicService);
-
-            
-            //        2014-06-14 15:57:27.456 PNPDemo[36850:4403] BasicUPnPService - initWithSSDPDevice - urn:schemas-upnp-org:service:MusicServices:1
-
-
         }
     }
 }
 
+- (NSDictionary *)mediaInfoForConnection:(SoapActionsAVTransport1 *)connection {
+    NSMutableString *tracks = [[NSMutableString alloc] init];
+    NSMutableString *mediaDuration = [[NSMutableString alloc] init];
+    NSMutableString *currentMediaURI = [[NSMutableString alloc] init];
+    NSMutableString *currentMediaMetaData = [[NSMutableString alloc] init];
+    NSMutableString *nextMediaURI = [[NSMutableString alloc] init];
+    NSMutableString *nextMediaMetadata = [[NSMutableString alloc] init];
+    NSMutableString *playMedium = [[NSMutableString alloc] init];
+    NSMutableString *recordMedium = [[NSMutableString alloc] init];
+    NSMutableString *writeStatus = [[NSMutableString alloc] init];
+    
+    [connection GetMediaInfoWithInstanceID:@"0"
+                               OutNrTracks:tracks
+                          OutMediaDuration:mediaDuration
+                             OutCurrentURI:currentMediaURI
+                     OutCurrentURIMetaData:currentMediaMetaData
+                                OutNextURI:nextMediaURI
+                        OutNextURIMetaData:nextMediaMetadata
+                             OutPlayMedium:playMedium
+                           OutRecordMedium:recordMedium
+                            OutWriteStatus:writeStatus];
+    
+    return @{@"tracks": tracks,
+             @"mediaDuration":mediaDuration,
+             @"currentMediaURI":currentMediaURI,
+             @"currentMediaMetaData":currentMediaMetaData,
+             @"nextMediaURI":nextMediaURI,
+             @"nextMediaMetaData":nextMediaMetadata,
+             @"playMedium":playMedium,
+             @"recordMedium":recordMedium,
+             @"writeStatus":writeStatus};
+}
 - (NSArray *)exploreMediaDirectoryRecursively:(NSString *)rootItemObjectID onServer:(MediaServer1Device *)server {
     NSLog(@"exploring with rootitem id %@", rootItemObjectID);
     NSMutableArray *mediaItems = [[NSMutableArray alloc] init];
@@ -110,7 +146,7 @@
             NSLog(@"found %d items in %@ directory", [items count], item.title);
             [mediaItems addObjectsFromArray:items];
         } else {
-            NSLog(@"adding media item %@", item.title);
+            NSLog(@"media item %@", [item propertiesString]);
             [mediaItems addObject:item];
         }
     }
@@ -146,6 +182,18 @@
     
     NSLog(@"returning %d mediaItems for directory %@", [mediaItems count], rootItemObjectID);
     return [mediaItems copy];
+}
+
+- (MediaServer1BasicObject *)sampleTrack {
+    
+//    2014-06-14 17:51:12.298 PNPDemo[39090:3a03] media item objectID: S://JCS-PC/Music/slsk/GOOD%20Music%20-%20Cruel%20Summer%20(2012)%20%5bV0%5d/09%20The%20One.mp3, parentID: A:ARTIST/2%20Chainz,%20Big%20Sean,%20Kanye%20West%20%26%20Marsha%20Ambrosius/, title: The One, objectClass: (null), isContainer: 0, albumArt: /getaa?u=x-file-cifs%3a%2f%2fJCS-PC%2fMusic%2fslsk%2fGOOD%2520Music%2520-%2520Cruel%2520Summer%2520(2012)%2520%255bV0%255d%2f09%2520The%2520One.mp3&v=18
+    MediaServer1BasicObject *track = [[MediaServer1BasicObject alloc] init];
+    track.title = @"The One";
+    track.isContainer = NO;
+    track.albumArt = @"/getaa?u=x-file-cifs%3a%2f%2fJCS-PC%2fMusic%2fslsk%2fGOOD%2520Music%2520-%2520Cruel%2520Summer%2520(2012)%2520%255bV0%255d%2f09%2520The%2520One.mp3&v=18";
+    track.objectID = @"S://JCS-PC/Music/slsk/GOOD%20Music%20-%20Cruel%20Summer%20(2012)%20%5bV0%5d/09%20The%20One.mp3";
+    track.parentID = @"A:ARTIST/2%20Chainz,%20Big%20Sean,%20Kanye%20West%20%26%20Marsha%20Ambrosius/";
+    return track;
 }
 
 

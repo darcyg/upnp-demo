@@ -60,6 +60,19 @@
 	[super dealloc];
 }
 
+- (NSDictionary *)properties {
+    return @{@"objectID":self.objectID,
+             @"parentID":self.parentID,
+             @"title":self.title,
+             @"objectClass":self.objectClass,
+             @"isContainer":[NSNumber numberWithBool:self.isContainer],
+             @"albumArt":self.albumArt};
+}
+
+- (NSString *)propertiesString {
+    return [NSString stringWithFormat:@"objectID: %@, parentID: %@, title: %@, objectClass: %@, isContainer: %hhd, albumArt: %@", self.objectID, self.parentID, self.title, self.objectClass, self.isContainer, self.albumArt];
+}
+
 
 
 
