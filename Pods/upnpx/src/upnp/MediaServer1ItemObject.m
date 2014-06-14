@@ -86,14 +86,16 @@
     
     [super dealloc];
 }
-
-
 -(void)addRes:(MediaServer1ItemRes*) resource{
     if(resource != nil){
         [resources addObject:resource];
     }
 }
 
+//NSArray *properties = @[@"artist", @"album", @"date", @"genre", @"originalTrackNumber", @"uri", @"protocolInfo", @"frequency", @"audioChannels", @"size", @"duration", @"icon", @"bitrate", @"uriCollection", @"resources"];
 
+- (NSString *)propertiesString {
+    return [NSString stringWithFormat:@"objectID: %@, parentID: %@, title: %@, objectClass: %@, isContainer: %hhd, albumArt: %@, artist: %@, album: %@, date: %@, genre: %@, originalTrackNumber: %@, uri: %@, protocolInfo: %@, frequency: %@, audioChannels: %@, size: %@, duration: %@, icon: %@, bitrate: %@, uriCollection: %@, resources: %@", self.objectID, self.parentID, self.title, self.objectClass, self.isContainer, self.albumArt, self.artist, self.album, self.date, self.genre, self.originalTrackNumber, self.uri, self.protocolInfo, self.frequency, self.audioChannels, self.size, self.duration, self.icon, self.bitrate, self.uriCollection, self.resources];
+}
 
 @end

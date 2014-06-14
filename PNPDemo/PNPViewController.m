@@ -14,9 +14,10 @@
 
 @interface PNPViewController () <UPnPDBObserver>
 @property (nonatomic, strong) NSArray *mDevices;
-@property (nonatomic, strong) NSMutableArray *mPlaylist;
 @property (nonatomic) BOOL handledSonos;
-@property (nonatomic, strong) NSMutableArray *processedServices;
+@property (nonatomic, strong) MediaRenderer1Device *sonosMediaPlayer;
+@property (weak, nonatomic) IBOutlet UILabel *loadedLabel;
+@property (nonatomic, strong) MediaServer1Device *sonosMediaServer;
 @end
 
 @implementation PNPViewController
@@ -24,81 +25,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UPnPDB* db = [[UPnPManager GetInstance] DB];
-    self.mDevices = [db rootDevices];
-    NSLog(@"observe DB!");
-    [db addObserver:(UPnPDBObserver *)self];
-    [[[UPnPManager GetInstance] SSDP] searchSSDP];
-    self.mPlaylist = [[NSMutableArray alloc] init];
-    self.processedServices = [[NSMutableArray alloc] init];
+    [self findMediaServers];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    NSLog(@"view will appear; devices are: %@ and %@", self.sonosMediaPlayer, self.sonosMediaServer);
 }
 
 //protocol UPnPDBObserver
 -(void)UPnPDBWillUpdate:(UPnPDB*)sender{
 }
 
-//NSString *objectID;
-//NSString *parentID;
-//NSString *objectClass;
-//NSString *title;
-//NSString *albumArt;
-//
-//BOOL isContainer;
-
-
 -(void)UPnPDBUpdated:(UPnPDB*)sender{
+    NSLog(@"upnp updated");
     for (BasicUPnPDevice *device in self.mDevices) {
-        
+        if (self.sonosMediaServer && self.sonosMediaPlayer) {
+            NSLog(@"detected both sonos components; stopping");
+            self.loadedLabel.text = @"loaded player, play away!";
+            [[[UPnPManager GetInstance] DB] removeObserver:(UPnPDBObserver *)self];
+            continue;
+        }
         if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaRenderer:1"]){
             if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Renderer"].location != NSNotFound) {
-                MediaRenderer1Device *mediaRenderer = (MediaRenderer1Device *)device;
-                NSLog(@"SONOS MEDIA SERVER is %@", mediaRenderer.friendlyName);
-                NSLog(@"mediaPlayList is %@", mediaRenderer.playList.playList);
-                NSLog(@"lets play sampel track: %@", [[self sampleTrack] propertiesString]);
-                [mediaRenderer playWithMedia:[self sampleTrack]];
-//                SoapActionsAVTransport1 *avTransport =  (SoapActionsAVTransport1 *)[device getServiceForType:@"urn:schemas-upnp-org:service:AVTransport:1"].soap;
-//                [(SoapActionsAVTransport1 *)avTransport.soap PlayWithInstanceID:@"0" Speed:@"1"];
-//                NSMutableDictionary *services = [device getServices];
-//                for(id key in services) {
-//                    BasicUPnPService *service = [services objectForKey:key];
-//                    if ([self.processedServices containsObject:service]) {
-//                        continue;
-//                    }
-
-//                    [service process];
-//                    [self.processedServices addObject:service];
-//                }
-
+                NSLog(@"found media renderer");
+                self.sonosMediaPlayer = (MediaRenderer1Device *)device;
             }
         }
         
-        //THIS IS HOW U FIND SONOS MEDIA LIBRARY
-        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"] && NO){
+        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
             if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Server"].location != NSNotFound) {
-                NSLog(@"*************************searchfor sonos media");
-                MediaServer1Device *sonosMediaServer = (MediaServer1Device *)device;
-                NSLog(@"media items count %d", [[self exploreMediaDirectoryRecursively:@"0" onServer:sonosMediaServer] count]);
+                NSLog(@"found media server");
+                self.sonosMediaServer = (MediaServer1Device *)device;
             }
-        }
-
-        
-        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:ZonePlayer:1"]){
-            BasicUPnPDevice *server = (BasicUPnPDevice *)device;
-            NSLog(@"server friendly name is %@", server.friendlyName);
-            
-            
-            BasicUPnPService *musicService;
-            for (BasicUPnPService *service in self.processedServices) {
-                if ([service.serviceType isEqualToString:@"urn:schemas-upnp-org:service:MusicServices:1"]) {
-                    musicService = service;
-                }
-            }
-            
-            NSLog(@"music service %@", musicService);
         }
     }
 }
@@ -135,6 +94,7 @@
              @"recordMedium":recordMedium,
              @"writeStatus":writeStatus};
 }
+
 - (NSArray *)exploreMediaDirectoryRecursively:(NSString *)rootItemObjectID onServer:(MediaServer1Device *)server {
     NSLog(@"exploring with rootitem id %@", rootItemObjectID);
     NSMutableArray *mediaItems = [[NSMutableArray alloc] init];
@@ -146,7 +106,8 @@
             NSLog(@"found %d items in %@ directory", [items count], item.title);
             [mediaItems addObjectsFromArray:items];
         } else {
-            NSLog(@"media item %@", [item propertiesString]);
+            MediaServer1ItemObject *track = (MediaServer1ItemObject *)item;
+            NSLog(@"media item %@", [track propertiesString]);
             [mediaItems addObject:item];
         }
     }
@@ -184,9 +145,7 @@
     return [mediaItems copy];
 }
 
-- (MediaServer1BasicObject *)sampleTrack {
-    
-//    2014-06-14 17:51:12.298 PNPDemo[39090:3a03] media item objectID: S://JCS-PC/Music/slsk/GOOD%20Music%20-%20Cruel%20Summer%20(2012)%20%5bV0%5d/09%20The%20One.mp3, parentID: A:ARTIST/2%20Chainz,%20Big%20Sean,%20Kanye%20West%20%26%20Marsha%20Ambrosius/, title: The One, objectClass: (null), isContainer: 0, albumArt: /getaa?u=x-file-cifs%3a%2f%2fJCS-PC%2fMusic%2fslsk%2fGOOD%2520Music%2520-%2520Cruel%2520Summer%2520(2012)%2520%255bV0%255d%2f09%2520The%2520One.mp3&v=18
+- (MediaServer1BasicObject *)sampleItem {
     MediaServer1BasicObject *track = [[MediaServer1BasicObject alloc] init];
     track.title = @"The One";
     track.isContainer = NO;
@@ -196,5 +155,44 @@
     return track;
 }
 
+- (MediaServer1ItemObject *)sampleTrack {
+    MediaServer1ItemObject *track = [[MediaServer1ItemObject alloc] init];
+    track.objectID = @"S://JCS-PC/Music/slsk/Modest%20Mouse%20-%20Moon%20and%20Antarctica/Modest%20Mouse%20-%2012%20-%20I%20Came%20As%20a%20Rat.mp3";
+    track.parentID = @"A:ARTIST/12%20modest%20mouse/";
+    track.title = @"i came as a rat";
+    track.isContainer = NO;
+    track.albumArt = @"/getaa?u=x-file-cifs%3a%2f%2fJCS-PC%2fMusic%2fslsk%2fModest%2520Mouse%2520-%2520Moon%2520and%2520Antarctica%2fModest%2520Mouse%2520-%252012%2520-%2520I%2520Came%2520As%2520a%2520Rat.mp3&v=18";
+    track.artist = @"modest mouse";
+    track.album = @"moon and antartica";
+    track.date = nil;
+    track.genre = @"";
+    track.uri = @"x-file-cifs://JCS-PC/Music/slsk/Modest%20Mouse%20-%20Moon%20and%20Antarctica/Modest%20Mouse%20-%2012%20-%20I%20Came%20As%20a%20Rat.mp3";
+    track.protocolInfo = @" x-file-cifs:*:audio/mpeg:*";
+    track.uriCollection = @{@"x-file-cifs:*:audio/mpeg:*":@"x-file-cifs://JCS-PC/Music/slsk/Modest%20Mouse%20-%20Moon%20and%20Antarctica/Modest%20Mouse%20-%2012%20-%20I%20Came%20As%20a%20Rat.mp3"};
+    return track;
+}
+
+- (void)findMediaServers {
+    NSLog(@"find media servers");
+    UPnPDB* db = [[UPnPManager GetInstance] DB];
+    self.mDevices = [db rootDevices];
+    [db addObserver:(UPnPDBObserver *)self];
+    [[[UPnPManager GetInstance] SSDP] searchSSDP];
+}
+
+- (IBAction)play:(id)sender {
+    if (self.sonosMediaPlayer) {
+        [self.sonosMediaPlayer.playList.playList addObject:[self sampleTrack]];
+        NSLog(@"lets play sampel track: %@", [[self sampleTrack] propertiesString]);
+        [self.sonosMediaPlayer playWithMedia:[self sampleTrack]];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"sonos player not found"
+                                   message:@"try again"
+                                  delegate:nil
+                         cancelButtonTitle:nil
+                         otherButtonTitles:nil] show];
+    }
+
+}
 
 @end

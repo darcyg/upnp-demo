@@ -57,6 +57,7 @@
 -(id)init;
 -(void)dealloc;
 -(void)addRes:(MediaServer1ItemRes*) res;
+-(NSString *)propertiesString;
 
 
 @property(retain, nonatomic) NSString *artist;
