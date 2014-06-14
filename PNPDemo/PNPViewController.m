@@ -15,6 +15,7 @@
 @interface PNPViewController () <UPnPDBObserver>
 @property (nonatomic, strong) NSArray *mDevices;
 @property (nonatomic, strong) NSMutableArray *mPlaylist;
+@property (nonatomic, strong) NSMutableArray *searchedDevices;
 @end
 
 @implementation PNPViewController
@@ -28,6 +29,7 @@
     [db addObserver:(UPnPDBObserver *)self];
     [[[UPnPManager GetInstance] SSDP] searchSSDP];
     self.mPlaylist = [[NSMutableArray alloc] init];
+    self.searchedDevices = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,10 +49,18 @@
     NSLog(@"devices: %@", self.mDevices);
     for (BasicUPnPDevice *device in self.mDevices) {
         NSLog(@"urn is %@", device.urn);
-        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
-            MediaServer1Device *server = (MediaServer1Device*)device;
-            NSArray *results = [self exploreMediaDirectoryRecursively:@"0" onServer:server];
-            NSLog(@"found %d items", [results count]);
+//        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
+        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:ZonePlayer:1"]){
+            NSLog(@"scanning device %@", [device urn]);
+            BasicUPnPDevice *server = (BasicUPnPDevice *)device;
+            NSLog(@"server type is %@", server.type);
+            NSLog(@"server friendly name is %@", server.friendlyName);
+            NSLog(@"services are %@", [server getServices]);
+            NSLog(@"topology is  %@", [server getServiceForType:@"urn:schemas-upnp-org:service:ZoneGroupTopology:1"]);
+
+
+//            NSArray *results = [self exploreMediaDirectoryRecursively:@"0" onServer:server];
+//            NSLog(@"found %d items", [results count]);
         }
 
     }
