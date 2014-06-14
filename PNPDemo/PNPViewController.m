@@ -15,7 +15,8 @@
 @interface PNPViewController () <UPnPDBObserver>
 @property (nonatomic, strong) NSArray *mDevices;
 @property (nonatomic, strong) NSMutableArray *mPlaylist;
-@property (nonatomic, strong) NSMutableArray *searchedDevices;
+@property (nonatomic) BOOL handledSonos;
+@property (nonatomic, strong) NSMutableArray *processedServices;
 @end
 
 @implementation PNPViewController
@@ -29,40 +30,72 @@
     [db addObserver:(UPnPDBObserver *)self];
     [[[UPnPManager GetInstance] SSDP] searchSSDP];
     self.mPlaylist = [[NSMutableArray alloc] init];
-    self.searchedDevices = [[NSMutableArray alloc] init];
+    self.processedServices = [[NSMutableArray alloc] init];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 }
-
 
 //protocol UPnPDBObserver
 -(void)UPnPDBWillUpdate:(UPnPDB*)sender{
-    NSLog(@"UPnPDBWillUpdate %d", [self.mDevices count]);
 }
 
 -(void)UPnPDBUpdated:(UPnPDB*)sender{
-    NSLog(@"UPnPDBUpdated %d", [self.mDevices count]);
-    NSLog(@"devices: %@", self.mDevices);
     for (BasicUPnPDevice *device in self.mDevices) {
-        NSLog(@"urn is %@", device.urn);
-//        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
-        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:ZonePlayer:1"]){
-            NSLog(@"scanning device %@", [device urn]);
-            BasicUPnPDevice *server = (BasicUPnPDevice *)device;
-            NSLog(@"server type is %@", server.type);
-            NSLog(@"server friendly name is %@", server.friendlyName);
-            NSLog(@"services are %@", [server getServices]);
-            NSLog(@"topology is  %@", [server getServiceForType:@"urn:schemas-upnp-org:service:ZoneGroupTopology:1"]);
-
-
-//            NSArray *results = [self exploreMediaDirectoryRecursively:@"0" onServer:server];
-//            NSLog(@"found %d items", [results count]);
+        
+        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaRenderer:1"]){
+            if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Server"].location != NSNotFound) {
+                NSLog(@"media renderer friendly name is %@", device.friendlyName);
+            }
+        }
+        
+        //THIS IS HOW U FIND SONOS MEDIA LIBRARY
+        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
+            if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Server"].location != NSNotFound) {
+                if (!self.handledSonos) {
+                    NSLog(@"going to read conetnts from sonos server recursively");
+                    MediaServer1Device *sonosMediaServer =  (MediaServer1Device *)device;
+                    NSArray *results = [self exploreMediaDirectoryRecursively:@"0" onServer:sonosMediaServer];
+                    NSLog(@"results count %d", [results count]);
+                    self.handledSonos = YES;
+                }
+            }
         }
 
+//        NSLog(@"urn is %@", device.urn);
+//        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:MediaServer:1"]){
+        
+        if([[device urn] isEqualToString:@"urn:schemas-upnp-org:device:ZonePlayer:1"]){
+//        if (YES) {
+            BasicUPnPDevice *server = (BasicUPnPDevice *)device;
+            NSLog(@"server friendly name is %@", server.friendlyName);
+            NSMutableDictionary *services = [server getServices] ;
+            
+            for(id key in services) {
+                BasicUPnPService *service = [services objectForKey:key];
+                if ([self.processedServices containsObject:service]) {
+                    continue;
+                }
+
+                [service process];
+                [self.processedServices addObject:service];
+            }
+            
+            BasicUPnPService *musicService;
+            for (BasicUPnPService *service in self.processedServices) {
+                if ([service.serviceType isEqualToString:@"urn:schemas-upnp-org:service:MusicServices:1"]) {
+                    musicService = service;
+                }
+            }
+            
+            NSLog(@"music service %@", musicService);
+
+            
+            //        2014-06-14 15:57:27.456 PNPDemo[36850:4403] BasicUPnPService - initWithSSDPDevice - urn:schemas-upnp-org:service:MusicServices:1
+
+
+        }
     }
 }
 
