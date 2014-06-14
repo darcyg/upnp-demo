@@ -1,0 +1,10 @@
+PODS:
+  - upnpx (1.2.4)
+
+DEPENDENCIES:
+  - upnpx
+
+SPEC CHECKSUMS:
+  upnpx: 1a5e648e4aaddb913546d3e2f40ae1f701e81a67
+
+COCOAPODS: 0.32.1
