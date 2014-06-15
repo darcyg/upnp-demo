@@ -9,6 +9,7 @@
 #import "PNPViewController.h"
 #import "UPnPDB.h"
 #import "UPnPManager.h"
+#import "PNPMediaDirectoryLookup.h"
 #import "MediaServerBasicObjectParser.h"
 
 
@@ -98,11 +99,11 @@
 - (NSArray *)exploreMediaDirectoryRecursively:(NSString *)rootItemObjectID onServer:(MediaServer1Device *)server {
     NSLog(@"exploring with rootitem id %@", rootItemObjectID);
     NSMutableArray *mediaItems = [[NSMutableArray alloc] init];
-    for (MediaServer1BasicObject *item in [self mediaItemsForDirectory:rootItemObjectID onServer:server]) {
+    PNPMediaDirectoryLookup *lookup = [[PNPMediaDirectoryLookup alloc] initWithMediaDevice:server rootDirectoryIdentifier:rootItemObjectID];
+    for (MediaServer1BasicObject *item in [lookup mediaItems]) {
         if ([item isContainer]) {
             NSLog(@"exploring container %@", item.title);
             NSArray *items =[self exploreMediaDirectoryRecursively:[item objectID] onServer:server];
-//            NSArray *items = [self mediaItemsForDirectory:[item objectID] onServer:server];
             NSLog(@"found %d items in %@ directory", [items count], item.title);
             [mediaItems addObjectsFromArray:items];
         } else {
@@ -112,36 +113,6 @@
         }
     }
     NSLog(@"going to return %d", [mediaItems count]);
-    return [mediaItems copy];
-}
-
-- (NSArray *)mediaItemsForDirectory:(NSString *)rootItemObjectID onServer:(MediaServer1Device *)server {
-    NSLog(@"retreiving media items for object id %@", rootItemObjectID);
-    //pass by reference strings to read output
-    NSMutableString *outResult = [[NSMutableString alloc] init];
-    NSMutableString *outNumberReturned = [[NSMutableString alloc] init];
-    NSMutableString *outTotalMatches = [[NSMutableString alloc] init];
-    NSMutableString *outUpdateID = [[NSMutableString alloc] init];
-    
-    
-    [[server contentDirectory] BrowseWithObjectID:rootItemObjectID
-                                       BrowseFlag:@"BrowseDirectChildren"
-                                           Filter:@"*"
-                                    StartingIndex:@"0"
-                                   RequestedCount:@"0"
-                                     SortCriteria:@"+dc:title'"
-                                        OutResult:outResult
-                                OutNumberReturned:outNumberReturned
-                                  OutTotalMatches:outTotalMatches
-                                      OutUpdateID:outUpdateID];
-    
-    NSData *didl = [outResult dataUsingEncoding:NSUTF8StringEncoding];
-    NSMutableArray *mediaItems = [[NSMutableArray alloc] init];
-    MediaServerBasicObjectParser *parser = [[MediaServerBasicObjectParser alloc] initWithMediaObjectArray:mediaItems];
-    [parser parseFromData:didl];
-    
-    
-    NSLog(@"returning %d mediaItems for directory %@", [mediaItems count], rootItemObjectID);
     return [mediaItems copy];
 }
 
