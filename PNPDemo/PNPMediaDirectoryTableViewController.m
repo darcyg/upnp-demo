@@ -9,6 +9,7 @@
 #import "PNPMediaDirectoryTableViewController.h"
 #import "PNPMediaDirectoryLookup.h"
 #import "MediaServer1BasicObject.h"
+#import "PNPMediaItemViewController.h"
 
 @interface PNPMediaDirectoryTableViewController ()
 @property BasicUPnPDevice *mediaDevice;
@@ -30,11 +31,8 @@
 - (void)viewDidLoad
 {
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
-    NSLog(@"dirVC did load");
     [super viewDidLoad];
-    NSLog(@"loading media items");
     [self loadMediaItems];
-    NSLog(@"done loading media items");
 }
 
 #pragma mark - Table view data source
@@ -70,7 +68,8 @@
         PNPMediaDirectoryTableViewController *next = [[PNPMediaDirectoryTableViewController alloc] initWithMediaDevice:self.mediaDevice rootDirectoryIdentifier:mediaItem.objectID];
         [self.navigationController pushViewController:next animated:YES];
     } else {
-        NSLog(@"selected non-container item!");
+        PNPMediaItemViewController *next = [[PNPMediaItemViewController alloc] initWithMediaItem:mediaItem];
+        [self.navigationController pushViewController:next animated:YES];
     }
 }
 

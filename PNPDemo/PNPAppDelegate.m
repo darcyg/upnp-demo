@@ -7,12 +7,13 @@
 //
 
 #import "PNPAppDelegate.h"
+#import "PNPMediaDeviceLibrary.h"
 
 @implementation PNPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [[PNPMediaDeviceLibrary sharedLibrary] scanForMediaDevices];
     return YES;
 }
 							

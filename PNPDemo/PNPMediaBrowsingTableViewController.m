@@ -11,9 +11,9 @@
 #import "BasicUPnPDevice.h"
 #import "UPnPManager.h"
 #import "PNPMediaDirectoryTableViewController.h"
+#import "PNPMediaDeviceLibrary.h"
 
 @interface PNPMediaBrowsingTableViewController () <UPnPDBObserver, UITableViewDataSource>
-@property (nonatomic, strong) NSArray *mediaDevices;
 @end
 
 @implementation PNPMediaBrowsingTableViewController
@@ -34,8 +34,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"num rows in section %d", [self.mediaDevices count]);
-    return [self.mediaDevices count];
+
+    return [[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] count];
 }
 
 
@@ -43,7 +43,7 @@
 {
     NSLog(@"cell for row at indexpath");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mediaItemTableViewCell" forIndexPath:indexPath];
-    BasicUPnPDevice *device = (BasicUPnPDevice *)[self.mediaDevices objectAtIndex:indexPath.row];
+    BasicUPnPDevice *device = (BasicUPnPDevice *)[[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] objectAtIndex:indexPath.row];
     cell.textLabel.text = device.friendlyName;
     
     return cell;
@@ -51,13 +51,13 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"selected row %d", indexPath.row);
-    BasicUPnPDevice *device = [self.mediaDevices objectAtIndex:indexPath.row];
+    BasicUPnPDevice *device = [[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] objectAtIndex:indexPath.row];
     PNPMediaDirectoryTableViewController *next = [[PNPMediaDirectoryTableViewController alloc] initWithMediaDevice:device rootDirectoryIdentifier:@"0"];
     [self.navigationController pushViewController:next animated:YES];
 }
 -(void)UPnPDBUpdated:(UPnPDB*)sender{
     NSLog(@"upnp updated");
-    NSLog(@"devices count is %d", [self.mediaDevices count]);
+    NSLog(@"devices count is %d", [[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] count]);
     [self.tableView reloadData];
 }
 
@@ -66,9 +66,7 @@
 - (void)findMediaServers {
     NSLog(@"find media servers");
     UPnPDB* db = [[UPnPManager GetInstance] DB];
-    self.mediaDevices = [db rootDevices];
     [db addObserver:(UPnPDBObserver *)self];
-    [[[UPnPManager GetInstance] SSDP] searchSSDP];
 }
 
 @end

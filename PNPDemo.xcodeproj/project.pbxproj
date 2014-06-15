@@ -10,6 +10,9 @@
 		BBDD0589194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0588194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m */; };
 		BBDD058C194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD058B194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m */; };
 		BBDD058F194E086200F53E57 /* PNPMediaDirectoryLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD058E194E086200F53E57 /* PNPMediaDirectoryLookup.m */; };
+		BBDD0592194E202A00F53E57 /* PNPMediaItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0591194E202A00F53E57 /* PNPMediaItemViewController.m */; };
+		BBDD0595194E308F00F53E57 /* PNPSonosPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0594194E308F00F53E57 /* PNPSonosPlayer.m */; };
+		BBDD0598194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0597194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m */; };
 		C1712F01194B7B7E0066DF4C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1712F00194B7B7E0066DF4C /* Foundation.framework */; };
 		C1712F03194B7B7E0066DF4C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1712F02194B7B7E0066DF4C /* CoreGraphics.framework */; };
 		C1712F05194B7B7E0066DF4C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1712F04194B7B7E0066DF4C /* UIKit.framework */; };
@@ -45,6 +48,12 @@
 		BBDD058B194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaDirectoryTableViewController.m; sourceTree = "<group>"; };
 		BBDD058D194E086200F53E57 /* PNPMediaDirectoryLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaDirectoryLookup.h; sourceTree = "<group>"; };
 		BBDD058E194E086200F53E57 /* PNPMediaDirectoryLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaDirectoryLookup.m; sourceTree = "<group>"; };
+		BBDD0590194E202A00F53E57 /* PNPMediaItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaItemViewController.h; sourceTree = "<group>"; };
+		BBDD0591194E202A00F53E57 /* PNPMediaItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaItemViewController.m; sourceTree = "<group>"; };
+		BBDD0593194E308F00F53E57 /* PNPSonosPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPSonosPlayer.h; sourceTree = "<group>"; };
+		BBDD0594194E308F00F53E57 /* PNPSonosPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPSonosPlayer.m; sourceTree = "<group>"; };
+		BBDD0596194E3FAA00F53E57 /* PNPMediaDeviceLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaDeviceLibrary.h; sourceTree = "<group>"; };
+		BBDD0597194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaDeviceLibrary.m; sourceTree = "<group>"; };
 		C1712EFD194B7B7E0066DF4C /* PNPDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PNPDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1712F00194B7B7E0066DF4C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C1712F02194B7B7E0066DF4C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,8 +136,14 @@
 		C1712F06194B7B7E0066DF4C /* PNPDemo */ = {
 			isa = PBXGroup;
 			children = (
+				BBDD0596194E3FAA00F53E57 /* PNPMediaDeviceLibrary.h */,
+				BBDD0597194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m */,
+				BBDD0593194E308F00F53E57 /* PNPSonosPlayer.h */,
+				BBDD0594194E308F00F53E57 /* PNPSonosPlayer.m */,
 				BBDD058A194E069E00F53E57 /* PNPMediaDirectoryTableViewController.h */,
 				BBDD058B194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m */,
+				BBDD0590194E202A00F53E57 /* PNPMediaItemViewController.h */,
+				BBDD0591194E202A00F53E57 /* PNPMediaItemViewController.m */,
 				BBDD058D194E086200F53E57 /* PNPMediaDirectoryLookup.h */,
 				BBDD058E194E086200F53E57 /* PNPMediaDirectoryLookup.m */,
 				BBDD0587194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.h */,
@@ -306,12 +321,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBDD0595194E308F00F53E57 /* PNPSonosPlayer.m in Sources */,
 				BBDD0589194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m in Sources */,
 				BBDD058F194E086200F53E57 /* PNPMediaDirectoryLookup.m in Sources */,
+				BBDD0598194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m in Sources */,
 				C1712F0D194B7B7E0066DF4C /* main.m in Sources */,
 				C1712F17194B7B7F0066DF4C /* PNPViewController.m in Sources */,
 				C1712F11194B7B7E0066DF4C /* PNPAppDelegate.m in Sources */,
 				BBDD058C194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m in Sources */,
+				BBDD0592194E202A00F53E57 /* PNPMediaItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

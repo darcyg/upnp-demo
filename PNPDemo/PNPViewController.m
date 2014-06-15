@@ -12,7 +12,6 @@
 #import "PNPMediaDirectoryLookup.h"
 #import "MediaServerBasicObjectParser.h"
 
-
 @interface PNPViewController () <UPnPDBObserver>
 @property (nonatomic, strong) NSArray *mDevices;
 @property (nonatomic) BOOL handledSonos;
