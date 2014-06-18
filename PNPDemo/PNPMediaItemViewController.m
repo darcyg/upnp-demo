@@ -26,10 +26,15 @@
     self.view.backgroundColor = [UIColor whiteColor];
     UIButton *playButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [playButton setTitle:@"PLAY" forState:UIControlStateNormal];
-    playButton.frame = CGRectMake(20, 60, 300, 300);
-    playButton.titleLabel.text = @"Play!";
+    playButton.frame = CGRectMake(20, 100, 300, 20);
     [playButton addTarget:self action:@selector(play) forControlEvents:UIControlEventAllTouchEvents];
     [self.view addSubview:playButton];
+    
+    UIButton *serverButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [serverButton setTitle:@"Server Info" forState:UIControlStateNormal];
+    serverButton.frame = CGRectMake(20, 250, 300, 20);
+    [serverButton addTarget:self action:@selector(serverInfo) forControlEvents:UIControlEventAllTouchEvents];
+    [self.view addSubview:serverButton];
     
     UILabel *trackTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 300)];
     trackTitle.text = self.mediaItem.title;
@@ -45,6 +50,14 @@
     } else {
         NSLog(@"havent loaded sonos player; can't play");
     }
+}
+
+- (void)serverInfo {
+    NSLog(@"%@", [[PNPMediaDeviceLibrary sharedLibrary] mediaServerInfo]);
+}
+
+- (void)setMediaServerTrack:(MediaServer1ItemObject *)track {
+    
 }
 
 @end

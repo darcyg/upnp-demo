@@ -14,5 +14,7 @@
 + (PNPMediaDeviceLibrary *) sharedLibrary;
 - (void)scanForMediaDevices;
 - (MediaRenderer1Device *)sonosPlayer;
+- (MediaServer1Device *)sonosMediaServer;
 - (void)playTrack:(MediaServer1BasicObject *)track;
+- (NSString *)mediaServerInfo;
 @end
