@@ -13,6 +13,7 @@
 		BBDD0592194E202A00F53E57 /* PNPMediaItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0591194E202A00F53E57 /* PNPMediaItemViewController.m */; };
 		BBDD0595194E308F00F53E57 /* PNPSonosPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0594194E308F00F53E57 /* PNPSonosPlayer.m */; };
 		BBDD0598194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0597194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m */; };
+		BBE60115195B9DFC004D7542 /* PNPStaticShit.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE60114195B9DFB004D7542 /* PNPStaticShit.m */; };
 		C1712F01194B7B7E0066DF4C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1712F00194B7B7E0066DF4C /* Foundation.framework */; };
 		C1712F03194B7B7E0066DF4C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1712F02194B7B7E0066DF4C /* CoreGraphics.framework */; };
 		C1712F05194B7B7E0066DF4C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1712F04194B7B7E0066DF4C /* UIKit.framework */; };
@@ -54,6 +55,8 @@
 		BBDD0594194E308F00F53E57 /* PNPSonosPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPSonosPlayer.m; sourceTree = "<group>"; };
 		BBDD0596194E3FAA00F53E57 /* PNPMediaDeviceLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaDeviceLibrary.h; sourceTree = "<group>"; };
 		BBDD0597194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaDeviceLibrary.m; sourceTree = "<group>"; };
+		BBE60113195B9DFB004D7542 /* PNPStaticShit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PNPStaticShit.h; path = PNPDemo/PNPStaticShit.h; sourceTree = "<group>"; };
+		BBE60114195B9DFB004D7542 /* PNPStaticShit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PNPStaticShit.m; path = PNPDemo/PNPStaticShit.m; sourceTree = "<group>"; };
 		C1712EFD194B7B7E0066DF4C /* PNPDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PNPDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1712F00194B7B7E0066DF4C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C1712F02194B7B7E0066DF4C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -104,6 +107,8 @@
 		C1712EF4194B7B7E0066DF4C = {
 			isa = PBXGroup;
 			children = (
+				BBE60113195B9DFB004D7542 /* PNPStaticShit.h */,
+				BBE60114195B9DFB004D7542 /* PNPStaticShit.m */,
 				C1712F06194B7B7E0066DF4C /* PNPDemo */,
 				C1712F25194B7B7F0066DF4C /* PNPDemoTests */,
 				C1712EFF194B7B7E0066DF4C /* Frameworks */,
@@ -321,6 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBE60115195B9DFC004D7542 /* PNPStaticShit.m in Sources */,
 				BBDD0595194E308F00F53E57 /* PNPSonosPlayer.m in Sources */,
 				BBDD0589194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m in Sources */,
 				BBDD058F194E086200F53E57 /* PNPMediaDirectoryLookup.m in Sources */,

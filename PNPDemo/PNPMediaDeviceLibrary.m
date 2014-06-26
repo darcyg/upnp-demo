@@ -43,12 +43,53 @@
 - (void)playTrack:(MediaServer1BasicObject *)track {
     MediaServer1ItemObject *mediaItem = (MediaServer1ItemObject *)track;
     if (([mediaItem.protocolInfo rangeOfString:@"sonos.com"].location != NSNotFound) || ([mediaItem.protocolInfo rangeOfString:@"x-rincon"].location != NSNotFound)) {
-        //handle stream??
-        NSLog(@"trying to play media stream");
+        // prepare content server for connection
+        // get instance id
+        // prepare renderer for connection (using instance id)
+        // set av URI for server
+        // set AV URI for renderer
+        
         NSLog(@"media stream uri %@", mediaItem.uri);
-        NSLog(@"%d", [[self sonosPlayer].avTransport SetAVTransportURIWithInstanceID:@"0"
+        NSLog(@"%d", [[self sonosMediaServer].avTransport SetAVTransportURIWithInstanceID:@"0"
                                                              CurrentURI:mediaItem.uri
                                                      CurrentURIMetaData:@""]);
+        
+        NSMutableString *outConnectionID = [[NSMutableString alloc] init];
+        NSMutableString *outAvTransportID = [[NSMutableString alloc] init];
+        NSMutableString *outRcsID = [[NSMutableString alloc] init];
+        
+        int something = [[self sonosMediaServer].connectionManager PrepareForConnectionWithRemoteProtocolInfo:mediaItem.protocolInfo
+                                                                        PeerConnectionManager:@"0"
+                                                                             PeerConnectionID:@"0"
+                                                                                    Direction:@"Output"
+                                                                              OutConnectionID:outConnectionID
+                                                                             OutAVTransportID:outAvTransportID
+                                                                                     OutRcsID:outRcsID];
+        
+        NSLog(@"connected: %d", something);
+        
+        [[self sonosPlayer].connectionManager PrepareForConnectionWithRemoteProtocolInfo:mediaItem.protocolInfo
+                                                                   PeerConnectionManager:@"0"
+                                                                        PeerConnectionID:@"0"
+                                                                               Direction:@"Input"
+                                                                         OutConnectionID:outConnectionID
+                                                                        OutAVTransportID:outAvTransportID
+                                                                                OutRcsID:outRcsID];
+
+        
+        
+        
+//        NSMutableString *protocolInfo = [[NSMutableString alloc] init];
+//        NSMutableString *protocolSink = [[NSMutableString alloc] init];
+//        [[[self sonosMediaServer] connectionManager] GetProtocolInfoWithOutSource:protocolInfo OutSink:protocolSink];
+//        NSLog(@"media server protocol info %@, sink %@", protocolInfo, protocolSink);
+//        [[[self sonosPlayer] connectionManager] GetProtocolInfoWithOutSource:protocolInfo OutSink:protocolSink];
+//        NSLog(@"media renderer protocol info %@, sink %@", protocolInfo, protocolSink);
+
+
+        NSLog(@"server info %@", [self mediaServerInfo]);
+        [[[self sonosMediaServer] avTransport] PlayWithInstanceID:@"0" Speed:@"1"];
+
         
     } else {
         [[self sonosPlayer].playList.playList removeAllObjects];
@@ -72,7 +113,6 @@
     MediaRenderer1Device *sonosPlayer;
     for (BasicUPnPDevice *device in self.mediaDevices) {
         if ([device.friendlyName rangeOfString:@"Sonos PLAY:5 Media Renderer"].location != NSNotFound) {
-            NSLog(@"found media renderer");
             sonosPlayer = (MediaRenderer1Device *)device;
         }
     }

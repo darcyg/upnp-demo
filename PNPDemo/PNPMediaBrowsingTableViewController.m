@@ -12,6 +12,7 @@
 #import "UPnPManager.h"
 #import "PNPMediaDirectoryTableViewController.h"
 #import "PNPMediaDeviceLibrary.h"
+#import "PNPStaticShit.h"
 
 @interface PNPMediaBrowsingTableViewController () <UPnPDBObserver, UITableViewDataSource>
 @end
@@ -49,6 +50,21 @@
     return cell;
 }
 
+- (IBAction)playDrake:(id)sender {
+    if ([[PNPMediaDeviceLibrary sharedLibrary] sonosPlayer]) {
+        NSLog(@"tryna play drake");
+        [[[PNPMediaDeviceLibrary sharedLibrary] sonosPlayer].avTransport SetAVTransportURIWithInstanceID:@"0"
+                                                                                              CurrentURI:[PNPStaticShit drakeUrl]
+                                                                                      CurrentURIMetaData:@""];
+        [[[PNPMediaDeviceLibrary sharedLibrary] sonosPlayer].avTransport PlayWithInstanceID:@"0" Speed:@"1"];
+//        [[[PNPMediaDeviceLibrary sharedLibrary] sonosPlayer] play];
+
+    } else {
+        NSLog(@"dont have sonos cant play");
+        [self findMediaServers];
+    }
+}
+
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"selected row %d", indexPath.row);
     BasicUPnPDevice *device = [[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] objectAtIndex:indexPath.row];
@@ -59,6 +75,7 @@
     NSLog(@"upnp updated");
     NSLog(@"devices count is %d", [[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] count]);
     [self.tableView reloadData];
+    [self.tableView setNeedsDisplay];
 }
 
 - (void)UPnPDBWillUpdate:(UPnPDB *)sender { };
