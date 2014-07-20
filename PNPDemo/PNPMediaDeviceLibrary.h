@@ -17,4 +17,5 @@
 - (MediaServer1Device *)sonosMediaServer;
 - (void)playTrack:(MediaServer1BasicObject *)track;
 - (NSString *)mediaServerInfo;
+- (void)playDrake;
 @end

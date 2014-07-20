@@ -9,6 +9,7 @@
 #import "PNPMediaDeviceLibrary.h"
 #import "UPnPDB.h"
 #import "UPnPManager.h"
+#import "PNPStaticShit.h"
 
 @interface PNPMediaDeviceLibrary () <UPnPDBObserver>
 @property (nonatomic, strong) NSMutableArray *privateDevices;
@@ -145,4 +146,26 @@
     return [NSString stringWithFormat:@"track: %@, outURI: %@, outURIMetaData: %@", outTrack, outURI, outURIMetaData];
 }
 
+- (void)playDrake {
+    if ([self sonosPlayer]) {
+        NSLog(@"tryna play drake");
+        [[self sonosPlayer].avTransport SetAVTransportURIWithInstanceID:@"0"
+                                                             CurrentURI:[PNPStaticShit drakeUrl]
+                                                     CurrentURIMetaData:@""];
+        [[self sonosPlayer].avTransport PlayWithInstanceID:@"0" Speed:@"1"];
+    } else {
+        NSLog(@"dont have sonos cant play");
+//        [self findMediaServers];
+    }
+}
+
 @end
+
+//algo sketch
+//set home location
+//register for home location -- leaving region
+    // leave region: register for home location: return to region
+    // return to region: register for reachability
+        //reachability: connected to wifi
+            // start searching for servers
+            // found server; play media

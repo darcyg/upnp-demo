@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BBBA6B4F197C277300AF18F5 /* PNPLocationSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBA6B4E197C277300AF18F5 /* PNPLocationSettingViewController.m */; };
+		BBBA6B51197C283200AF18F5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBBA6B50197C283200AF18F5 /* MapKit.framework */; };
 		BBDD0589194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0588194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m */; };
 		BBDD058C194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD058B194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m */; };
 		BBDD058F194E086200F53E57 /* PNPMediaDirectoryLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD058E194E086200F53E57 /* PNPMediaDirectoryLookup.m */; };
@@ -43,6 +45,9 @@
 
 /* Begin PBXFileReference section */
 		230B7337C9F34A5E8096CBCA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBBA6B4D197C277300AF18F5 /* PNPLocationSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPLocationSettingViewController.h; sourceTree = "<group>"; };
+		BBBA6B4E197C277300AF18F5 /* PNPLocationSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPLocationSettingViewController.m; sourceTree = "<group>"; };
+		BBBA6B50197C283200AF18F5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BBDD0587194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaBrowsingTableViewController.h; sourceTree = "<group>"; };
 		BBDD0588194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaBrowsingTableViewController.m; sourceTree = "<group>"; };
 		BBDD058A194E069E00F53E57 /* PNPMediaDirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaDirectoryTableViewController.h; sourceTree = "<group>"; };
@@ -84,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBBA6B51197C283200AF18F5 /* MapKit.framework in Frameworks */,
 				C1712F03194B7B7E0066DF4C /* CoreGraphics.framework in Frameworks */,
 				C1712F05194B7B7E0066DF4C /* UIKit.framework in Frameworks */,
 				C1712F01194B7B7E0066DF4C /* Foundation.framework in Frameworks */,
@@ -129,6 +135,7 @@
 		C1712EFF194B7B7E0066DF4C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BBBA6B50197C283200AF18F5 /* MapKit.framework */,
 				C1712F00194B7B7E0066DF4C /* Foundation.framework */,
 				C1712F02194B7B7E0066DF4C /* CoreGraphics.framework */,
 				C1712F04194B7B7E0066DF4C /* UIKit.framework */,
@@ -141,6 +148,8 @@
 		C1712F06194B7B7E0066DF4C /* PNPDemo */ = {
 			isa = PBXGroup;
 			children = (
+				BBBA6B4D197C277300AF18F5 /* PNPLocationSettingViewController.h */,
+				BBBA6B4E197C277300AF18F5 /* PNPLocationSettingViewController.m */,
 				BBDD0596194E3FAA00F53E57 /* PNPMediaDeviceLibrary.h */,
 				BBDD0597194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m */,
 				BBDD0593194E308F00F53E57 /* PNPSonosPlayer.h */,
@@ -331,6 +340,7 @@
 				BBDD0589194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m in Sources */,
 				BBDD058F194E086200F53E57 /* PNPMediaDirectoryLookup.m in Sources */,
 				BBDD0598194E3FAA00F53E57 /* PNPMediaDeviceLibrary.m in Sources */,
+				BBBA6B4F197C277300AF18F5 /* PNPLocationSettingViewController.m in Sources */,
 				C1712F0D194B7B7E0066DF4C /* main.m in Sources */,
 				C1712F17194B7B7F0066DF4C /* PNPViewController.m in Sources */,
 				C1712F11194B7B7E0066DF4C /* PNPAppDelegate.m in Sources */,

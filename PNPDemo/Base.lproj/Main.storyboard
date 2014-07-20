@@ -78,23 +78,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="8Yq-at-bJ7">
                         <nil key="title"/>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Uql-Et-Q0J">
-                            <rect key="frame" x="96" y="6" width="128" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" title="play drake">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="playDrake:" destination="Q3K-lc-GXu" eventType="touchUpInside" id="xTt-rk-Js5"/>
-                            </connections>
-                        </button>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="2Il-J3-h4t">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KeY-Wx-InP">
                                 <rect key="frame" x="233" y="5" width="71" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="set loc">
+                                <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -103,7 +92,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ubv-Kp-UbH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="517" y="-124"/>
+            <point key="canvasLocation" x="1503" y="334"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="8Jt-Af-vTb">
@@ -140,24 +129,26 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Section-2" id="e3F-dn-TOD">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="KgD-DT-0vq">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="8Q1-KI-YaS" style="IBUITableViewCellStyleDefault" id="KgD-DT-0vq">
                                         <rect key="frame" x="0.0" y="211" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KgD-DT-0vq" id="OS2-em-sc6">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Bky-qQ-HN6">
-                                        <rect key="frame" x="0.0" y="255" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bky-qQ-HN6" id="PQA-DZ-RIr">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Q1-KI-YaS">
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <string key="text">Song: https://ia801000.us.archive.org/13/items/03.DrakeStartedFromTheBottomfeat.RamajEroc/03.%20Drake%20-%20Started%20From%20The%20Bottom%20%28feat.%20Ramaj%20Eroc%29.mp3</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Mvt-yH-NV1">
-                                        <rect key="frame" x="0.0" y="299" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="255" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mvt-yH-NV1" id="PqU-ob-k1c">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -190,18 +181,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="qYV-Mw-NlY">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="qYV-Mw-NlY">
+                                <rect key="frame" x="0.0" y="64" width="320" height="435"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P3o-U4-TId">
+                                <rect key="frame" x="20" y="518" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Save Location">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveLocation:" destination="MsK-S3-XXf" eventType="touchUpInside" id="3a7-ND-3iE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uXi-b8-2KI" firstAttribute="top" secondItem="P3o-U4-TId" secondAttribute="bottom" constant="20" id="7dA-1z-fgg"/>
+                            <constraint firstItem="qYV-Mw-NlY" firstAttribute="top" secondItem="B4k-jr-c1t" secondAttribute="bottom" id="9Rt-hc-gi8"/>
+                            <constraint firstAttribute="trailing" secondItem="P3o-U4-TId" secondAttribute="trailing" constant="20" id="UVd-es-igo"/>
+                            <constraint firstAttribute="trailing" secondItem="qYV-Mw-NlY" secondAttribute="trailing" id="XxH-Xb-uDL"/>
+                            <constraint firstItem="P3o-U4-TId" firstAttribute="top" secondItem="qYV-Mw-NlY" secondAttribute="bottom" constant="19" id="rpD-Ik-tlG"/>
+                            <constraint firstItem="P3o-U4-TId" firstAttribute="leading" secondItem="1tS-uW-Ybd" secondAttribute="leading" constant="20" id="tTl-TU-jFm"/>
+                            <constraint firstItem="qYV-Mw-NlY" firstAttribute="leading" secondItem="1tS-uW-Ybd" secondAttribute="leading" id="xpa-gM-pI2"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="P9D-Ve-aNK"/>
+                    <connections>
+                        <outlet property="mapView" destination="qYV-Mw-NlY" id="w73-vO-Ucp"/>
+                        <outlet property="saveLocationButton" destination="P3o-U4-TId" id="vIQ-LV-yF7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EOk-bq-hyX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1379" y="-132"/>
+            <point key="canvasLocation" x="1503" y="-360"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WSh-0p-SEs">
