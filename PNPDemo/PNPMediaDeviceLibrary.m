@@ -98,10 +98,9 @@
     }
 }
 
--(void)UPnPDBWillUpdate:(UPnPDB*)sender{ NSLog(@"will update"); }
+-(void)UPnPDBWillUpdate:(UPnPDB*)sender{ }
 
 -(void)UPnPDBUpdated:(UPnPDB*)sender{
-    NSLog(@"looking for sonos player");
     self.privateDevices = [[[[UPnPManager GetInstance] DB] rootDevices] mutableCopy];
 }
 

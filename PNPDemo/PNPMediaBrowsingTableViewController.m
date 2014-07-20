@@ -11,10 +11,13 @@
 #import "BasicUPnPDevice.h"
 #import "UPnPManager.h"
 #import "PNPMediaDirectoryTableViewController.h"
+#import "ESTBeaconManager.h"
 #import "PNPMediaDeviceLibrary.h"
 #import "PNPStaticShit.h"
 
-@interface PNPMediaBrowsingTableViewController () <UPnPDBObserver, UITableViewDataSource>
+@interface PNPMediaBrowsingTableViewController () <UPnPDBObserver, UITableViewDataSource, ESTBeaconManagerDelegate, CLLocationManagerDelegate>
+@property ESTBeaconManager *beaconManager;
+@property CLLocationManager *locManager;
 @end
 
 @implementation PNPMediaBrowsingTableViewController
@@ -24,6 +27,86 @@
     [super viewDidLoad];
     [self findMediaServers];
     self.tableView.dataSource = self;
+    self.beaconManager = [[ESTBeaconManager alloc] init];
+    self.locManager = [[CLLocationManager alloc] init];
+    self.beaconManager.delegate = self;
+    self.locManager.delegate = self;
+    
+    NSLog(@"monitoring availbale: %d", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]);
+    NSLog(@"auth status %d", [CLLocationManager authorizationStatus]);
+    
+    CLBeaconRegion *lamansionBeacon = [[CLBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID major:0 minor:0 identifier:@"LamansionBeacon"];
+    
+    [self.locManager startMonitoringForRegion:lamansionBeacon];
+    
+    ESTBeaconRegion *region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID identifier:@"EstimoteSampleRegion"];
+    [self.beaconManager startEstimoteBeaconsDiscoveryForRegion:region];
+
+    [self.beaconManager startRangingBeaconsInRegion:region];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
+    NSLog(@"entered region");
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    NSLog(@"failed %@", error);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region {
+    NSLog(@"started monitoring");
+}
+
+- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    NSLog(@"ranged beacons");
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager didDiscoverBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region {
+    NSLog(@"discovered beacons");
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region {
+    NSLog(@"%@", beacons);
+    NSLog(@"ranged beacons");
+    if([beacons count] > 0)
+    {
+        NSLog(@"got beacons");
+        // beacon array is sorted based on distance
+        // closest beacon is the first one
+        ESTBeacon* closestBeacon = [beacons objectAtIndex:0];
+        
+        switch (closestBeacon.proximity)
+        {
+            case CLProximityUnknown:
+                NSLog(@"unknown");
+                break;
+            case CLProximityImmediate:
+                NSLog(@"immediate");
+                break;
+            case CLProximityNear:
+                NSLog(@"near");
+                break;
+            case CLProximityFar:
+                NSLog(@"far");
+                break;
+            default:
+                break;
+        }
+    }
+
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager didFailDiscoveryInRegion:(ESTBeaconRegion *)region {
+    NSLog(@"failed discovery");
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager monitoringDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error {
+    NSLog(@"monitoring failed");
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager rangingBeaconsDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error {
+    NSLog(@"ranging beacons did fail");
+    NSLog(@"error: %@", error);
 }
 
 #pragma mark - Table view data source
@@ -72,7 +155,7 @@
     [self.navigationController pushViewController:next animated:YES];
 }
 -(void)UPnPDBUpdated:(UPnPDB*)sender{
-    NSLog(@"upnp updated");
+//    NSLog(@"upnp updated");
     NSLog(@"devices count is %d", [[[PNPMediaDeviceLibrary sharedLibrary] mediaDevices] count]);
     [self.tableView reloadData];
     [self.tableView setNeedsDisplay];

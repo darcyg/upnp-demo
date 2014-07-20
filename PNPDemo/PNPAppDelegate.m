@@ -8,11 +8,13 @@
 
 #import "PNPAppDelegate.h"
 #import "PNPMediaDeviceLibrary.h"
+#import "PNPLocationSettingViewController.h"
 
 @implementation PNPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [PNPLocationSettingViewController class];//for linker
     [[PNPMediaDeviceLibrary sharedLibrary] scanForMediaDevices];
     return YES;
 }
