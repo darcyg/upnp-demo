@@ -257,6 +257,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = WoracesWorkshop;
 				TargetAttributes = {
+					C1712EFC194B7B7E0066DF4C = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					C1712F1D194B7B7F0066DF4C = {
 						TestTargetID = C1712EFC194B7B7E0066DF4C;
 					};
