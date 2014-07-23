@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BBBA6B4F197C277300AF18F5 /* PNPLocationSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBA6B4E197C277300AF18F5 /* PNPLocationSettingViewController.m */; };
 		BBBA6B51197C283200AF18F5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBBA6B50197C283200AF18F5 /* MapKit.framework */; };
+		BBBA6B5B197F2A6B00AF18F5 /* PNPLocationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBA6B5A197F2A6B00AF18F5 /* PNPLocationTracker.m */; };
 		BBDD0589194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD0588194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m */; };
 		BBDD058C194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD058B194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m */; };
 		BBDD058F194E086200F53E57 /* PNPMediaDirectoryLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = BBDD058E194E086200F53E57 /* PNPMediaDirectoryLookup.m */; };
@@ -48,6 +49,8 @@
 		BBBA6B4D197C277300AF18F5 /* PNPLocationSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPLocationSettingViewController.h; sourceTree = "<group>"; };
 		BBBA6B4E197C277300AF18F5 /* PNPLocationSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPLocationSettingViewController.m; sourceTree = "<group>"; };
 		BBBA6B50197C283200AF18F5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BBBA6B59197F2A6B00AF18F5 /* PNPLocationTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPLocationTracker.h; sourceTree = "<group>"; };
+		BBBA6B5A197F2A6B00AF18F5 /* PNPLocationTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPLocationTracker.m; sourceTree = "<group>"; };
 		BBDD0587194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaBrowsingTableViewController.h; sourceTree = "<group>"; };
 		BBDD0588194E00CC00F53E57 /* PNPMediaBrowsingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPMediaBrowsingTableViewController.m; sourceTree = "<group>"; };
 		BBDD058A194E069E00F53E57 /* PNPMediaDirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPMediaDirectoryTableViewController.h; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 		C1712F06194B7B7E0066DF4C /* PNPDemo */ = {
 			isa = PBXGroup;
 			children = (
+				BBBA6B59197F2A6B00AF18F5 /* PNPLocationTracker.h */,
+				BBBA6B5A197F2A6B00AF18F5 /* PNPLocationTracker.m */,
 				BBBA6B4D197C277300AF18F5 /* PNPLocationSettingViewController.h */,
 				BBBA6B4E197C277300AF18F5 /* PNPLocationSettingViewController.m */,
 				BBDD0596194E3FAA00F53E57 /* PNPMediaDeviceLibrary.h */,
@@ -345,6 +350,7 @@
 				C1712F17194B7B7F0066DF4C /* PNPViewController.m in Sources */,
 				C1712F11194B7B7E0066DF4C /* PNPAppDelegate.m in Sources */,
 				BBDD058C194E069E00F53E57 /* PNPMediaDirectoryTableViewController.m in Sources */,
+				BBBA6B5B197F2A6B00AF18F5 /* PNPLocationTracker.m in Sources */,
 				BBDD0592194E202A00F53E57 /* PNPMediaItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

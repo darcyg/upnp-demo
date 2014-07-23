@@ -10,5 +10,7 @@
 
 @interface PNPStaticShit : NSObject
 + (NSString *)drakeUrl;
-
++ (NSString *)homeLocationLatKey;
++ (NSString *)homeLocationLongKey;
++ (NSString *)homeLocationUpdatedNotif;
 @end
