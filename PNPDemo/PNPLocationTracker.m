@@ -57,30 +57,21 @@
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
     NSLog(@"entered region");
+    [self triggerEnteredRegionEvents];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
     NSLog(@"exited region");
 }
 
-- (void)fireLocationAlert:(NSString *)message {
-    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"location alert"
-                                                            message:message
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"cancel"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        });
-    } else {
-        UILocalNotification *localNotification = [[UILocalNotification alloc]init];
-        localNotification.alertBody = message;
-        localNotification.alertAction = @"Open";
-        localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication]applicationIconBadgeNumber]+1;
-        
-        [[UIApplication sharedApplication]presentLocalNotificationNow:localNotification];
-    }
+- (void)triggerEnteredRegionEvents {
+    UILocalNotification *localNotification = [[UILocalNotification alloc]init];
+    localNotification.alertBody = @"entered region";
+    localNotification.alertAction = @"Open";
+    localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication]applicationIconBadgeNumber]+1;
+    
+    [[UIApplication sharedApplication]presentLocalNotificationNow:localNotification];
+    
 }
 
 - (CLLocationManager *)locationManager {
